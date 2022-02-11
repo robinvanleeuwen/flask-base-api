@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_jsonrpc import JSONRPC
 
-from endpoints import auth
+from endpoints.auth import auth
 
 
 def create_app():
@@ -16,3 +16,5 @@ def create_app():
         api.register_blueprint(
             app, ep, url_prefix=f"/{ep.name}", enable_web_browsable_api=True
         )
+
+    return app

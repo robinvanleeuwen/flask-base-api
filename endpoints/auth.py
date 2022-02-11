@@ -1,6 +1,9 @@
+from uuid import uuid4
+
+from flask import g
 from flask_jsonrpc import JSONRPCBlueprint
 
-from helpers.response import create_response
+from helpers.response import create_json_response
 from logger import CustomLogger
 
 auth = JSONRPCBlueprint("auth", __name__)
@@ -8,7 +11,7 @@ log = CustomLogger()
 
 
 @auth.method("login")
-def login(lc: str, ls: str, lt: str):
+def login(lc: str, ls: str, lt: str) -> dict:
     """
     Do the authentication process
     :param lc: login code
@@ -17,13 +20,18 @@ def login(lc: str, ls: str, lt: str):
     :return: JSON Response
     """
     log.info("Starting Authentication Process")
-    
+
     login_success = False
 
-    if lc == "u" and ls == "P" and lt == "t":
+    if lc == "c" and ls == "s" and lt == "t":
+        log.info("Login Success")
         login_success = True
+        g.lc = lc
 
     if login_success:
-        create_response("ok", "Logged In")
+        data = create_json_response("ok", "Logged In", token=uuid4())
+        log.info(data)
+        return data
     else:
-        create_response("error", "Wrong Credentials")
+        log.fail("Login failed")
+        return create_json_response("error", "Wrong Credentials")
