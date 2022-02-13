@@ -19,6 +19,7 @@ class Account(APIBase):
     uid = Column(Text, index=True, default=generate_uid)
     login_code = Column(Text, index=True, nullable=False)
     login_secret = Column(Text, index=True, nullable=False)
+    admin_level = Column(Integer, default=0)
 
 
 class Token(APIBase):
