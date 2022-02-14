@@ -4,6 +4,8 @@ from contextlib import contextmanager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
+if os.environ["DATABASE_URL"] is None:
+    pass
 APIBase = declarative_base()
 
 SessionMaker = sessionmaker(

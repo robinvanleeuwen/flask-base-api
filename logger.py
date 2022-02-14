@@ -25,7 +25,7 @@ log_level_definitions = {
     "SILENT": 1,
 }
 
-ENVIRONMENT = os.environ.get("APP_SETTINGS", "config.Development")
+ENVIRONMENT = "config.Development"
 
 if ENVIRONMENT == "config.Development":
     LOG_TO_SCREEN = True
@@ -57,12 +57,12 @@ class Singleton(type):
 
 class CustomLogger(object, metaclass=Singleton):
     def __init__(
-        self,
-        log_level=LOG_LEVEL,
-        log_to_screen=LOG_TO_SCREEN,
-        log_to_database=LOG_TO_DATABASE,
-        log_to_file=LOG_TO_FILE,
-        max_length=60000,
+            self,
+            log_level=LOG_LEVEL,
+            log_to_screen=LOG_TO_SCREEN,
+            log_to_database=LOG_TO_DATABASE,
+            log_to_file=LOG_TO_FILE,
+            max_length=60000,
     ):
         self.log_level = log_level
         self.log_to_screen = log_to_screen
@@ -78,9 +78,9 @@ class CustomLogger(object, metaclass=Singleton):
         message = str(message)
         if len(message) > self.max_length:
             message = (
-                message[0 : int(self.max_length / 2)]
-                + " { ... ... ... truncated ... ... ... } "
-                + message[int(-1 * (self.max_length / 2)) :]
+                    message[0: int(self.max_length / 2)]
+                    + " { ... ... ... truncated ... ... ... } "
+                    + message[int(-1 * (self.max_length / 2)):]
             )
 
         if timestamp is None:
@@ -89,15 +89,15 @@ class CustomLogger(object, metaclass=Singleton):
         stack_info = inspect.stack()[1][3]
 
         formatted_message = (
-            ColorTypes.BOLD
-            + f"[{str(timestamp)}]"
-            + " "
-            + f"[{g.get('email', '- not logged in -')}]"
-            + " "
-            + f"[{stack_info}]"
-            + " "
-            + str(message)
-            + ColorTypes.ENDC
+                ColorTypes.BOLD
+                + f"[{str(timestamp)}]"
+                + " "
+                + f"[{g.get('email', '- not logged in -')}]"
+                + " "
+                + f"[{stack_info}]"
+                + " "
+                + str(message)
+                + ColorTypes.ENDC
         )
 
         self.do_logging(
@@ -118,9 +118,9 @@ class CustomLogger(object, metaclass=Singleton):
         message = str(message)
         if len(message) > self.max_length:
             message = (
-                message[0 : int(self.max_length / 2)]
-                + " { ... ... ... truncated ... ... ... } "
-                + message[int(-1 * (self.max_length / 2)) :]
+                    message[0: int(self.max_length / 2)]
+                    + " { ... ... ... truncated ... ... ... } "
+                    + message[int(-1 * (self.max_length / 2)):]
             )
         if timestamp is None:
             timestamp = datetime.datetime.now()
@@ -128,15 +128,15 @@ class CustomLogger(object, metaclass=Singleton):
         stack_info = inspect.stack()[1][3]
 
         formatted_message = (
-            ColorTypes.HEADER
-            + f"[{str(timestamp)}]"
-            + " "
-            + f"[{g.get('email', '- not logged in -')}]"
-            + " "
-            + f"[{stack_info}]"
-            + " "
-            + str(message)
-            + ColorTypes.ENDC
+                ColorTypes.HEADER
+                + f"[{str(timestamp)}]"
+                + " "
+                + f"[{g.get('email', '- not logged in -')}]"
+                + " "
+                + f"[{stack_info}]"
+                + " "
+                + str(message)
+                + ColorTypes.ENDC
         )
 
         self.do_logging(
@@ -150,10 +150,10 @@ class CustomLogger(object, metaclass=Singleton):
         )
 
     def info(
-        self,
-        message: str,
-        timestamp: datetime.datetime = None,
-        **kwargs: object,
+            self,
+            message: str,
+            timestamp: datetime.datetime = None,
+            **kwargs: object,
     ) -> object:
         if log_level_definitions[self.log_level] < 5:
             return
@@ -164,23 +164,23 @@ class CustomLogger(object, metaclass=Singleton):
         message = str(message)
         if len(message) > self.max_length:
             message = (
-                message[0 : int(self.max_length / 2)]
-                + " { ... ... ... truncated ... ... ... } "
-                + message[int(-1 * (self.max_length / 2)) :]
+                    message[0: int(self.max_length / 2)]
+                    + " { ... ... ... truncated ... ... ... } "
+                    + message[int(-1 * (self.max_length / 2)):]
             )
 
         stack_info = inspect.stack()[1][3]
 
         formatted_message = (
-            ColorTypes.INFOBLUE
-            + f"[{str(timestamp)}]"
-            + " "
-            + f"[{g.get('email', '- not logged in -')}]"
-            + " "
-            + f"[{stack_info}]"
-            + " "
-            + str(message)
-            + ColorTypes.ENDC
+                ColorTypes.INFOBLUE
+                + f"[{str(timestamp)}]"
+                + " "
+                + f"[{g.get('email', '- not logged in -')}]"
+                + " "
+                + f"[{stack_info}]"
+                + " "
+                + str(message)
+                + ColorTypes.ENDC
         )
 
         self.do_logging(
@@ -201,9 +201,9 @@ class CustomLogger(object, metaclass=Singleton):
         message = str(message)
         if len(message) > self.max_length:
             message = (
-                message[0 : int(self.max_length / 2)]
-                + " { ... ... ... truncated ... ... ... } "
-                + message[int(-1 * (self.max_length / 2)) :]
+                    message[0: int(self.max_length / 2)]
+                    + " { ... ... ... truncated ... ... ... } "
+                    + message[int(-1 * (self.max_length / 2)):]
             )
 
         if timestamp is None:
@@ -212,15 +212,15 @@ class CustomLogger(object, metaclass=Singleton):
         stack_info = inspect.stack()[1][3]
 
         formatted_message = (
-            ColorTypes.OKGREEN
-            + f"[{str(timestamp)}]"
-            + " "
-            + f"[{g.get('email', '- not logged in -')}]"
-            + " "
-            + f"[{stack_info}]"
-            + " "
-            + str(message)
-            + ColorTypes.ENDC
+                ColorTypes.OKGREEN
+                + f"[{str(timestamp)}]"
+                + " "
+                + f"[{g.get('email', '- not logged in -')}]"
+                + " "
+                + f"[{stack_info}]"
+                + " "
+                + str(message)
+                + ColorTypes.ENDC
         )
 
         self.do_logging(
@@ -240,9 +240,9 @@ class CustomLogger(object, metaclass=Singleton):
         message = str(message)
         if len(message) > self.max_length:
             message = (
-                message[0 : int(self.max_length / 2)]
-                + " { ... ... ... truncated ... ... ... } "
-                + message[int(-1 * (self.max_length / 2)) :]
+                    message[0: int(self.max_length / 2)]
+                    + " { ... ... ... truncated ... ... ... } "
+                    + message[int(-1 * (self.max_length / 2)):]
             )
 
         if timestamp is None:
@@ -251,15 +251,15 @@ class CustomLogger(object, metaclass=Singleton):
         stack_info = inspect.stack()[1][3]
 
         formatted_message = (
-            ColorTypes.WARNING
-            + f"[{str(timestamp)}]"
-            + " "
-            + f"[{g.get('email', '- not logged in -')}]"
-            + " "
-            + f"[{stack_info}]"
-            + " "
-            + str(message)
-            + ColorTypes.ENDC
+                ColorTypes.WARNING
+                + f"[{str(timestamp)}]"
+                + " "
+                + f"[{g.get('email', '- not logged in -')}]"
+                + " "
+                + f"[{stack_info}]"
+                + " "
+                + str(message)
+                + ColorTypes.ENDC
         )
 
         self.do_logging(
@@ -273,11 +273,11 @@ class CustomLogger(object, metaclass=Singleton):
         )
 
     def fail(
-        self,
-        message: str,
-        timestamp: datetime.datetime = None,
-        stop=False,
-        **kwargs,
+            self,
+            message: str,
+            timestamp: datetime.datetime = None,
+            stop=False,
+            **kwargs,
     ):
         if log_level_definitions[self.log_level] < 2:
             return
@@ -285,9 +285,9 @@ class CustomLogger(object, metaclass=Singleton):
         message = str(message)
         if len(message) > self.max_length:
             message = (
-                message[0 : int(self.max_length / 2)]
-                + " { ... ... ... truncated ... ... ... } "
-                + message[int(-1 * (self.max_length / 2)) :]
+                    message[0: int(self.max_length / 2)]
+                    + " { ... ... ... truncated ... ... ... } "
+                    + message[int(-1 * (self.max_length / 2)):]
             )
 
         if timestamp is None:
@@ -296,15 +296,15 @@ class CustomLogger(object, metaclass=Singleton):
         stack_info = inspect.stack()[1][3]
 
         formatted_message = (
-            ColorTypes.FAIL
-            + f"[{str(timestamp)}]"
-            + " "
-            + f"[{g.get('email', '- not logged in -')}]"
-            + " "
-            + f"[{stack_info}]"
-            + " "
-            + str(message)
-            + ColorTypes.ENDC
+                ColorTypes.FAIL
+                + f"[{str(timestamp)}]"
+                + " "
+                + f"[{g.get('email', '- not logged in -')}]"
+                + " "
+                + f"[{stack_info}]"
+                + " "
+                + str(message)
+                + ColorTypes.ENDC
         )
 
         self.do_logging(
@@ -346,14 +346,14 @@ class CustomLogger(object, metaclass=Singleton):
                 self.fail(f"Could not write to logfile: {str(e)}", stop=True)
 
     def do_logging(
-        self,
-        formatted_message,
-        timestamp,
-        log_level,
-        stack_info,
-        message,
-        user,
-        **kwargs,
+            self,
+            formatted_message,
+            timestamp,
+            log_level,
+            stack_info,
+            message,
+            user,
+            **kwargs,
     ):
 
         if self.log_to_screen:
