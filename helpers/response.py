@@ -5,6 +5,7 @@ log = CustomLogger()
 
 
 class Response:
+    optional_fields = {}
 
     def __init__(self, code: str, message: str, **kwargs):
 
@@ -25,6 +26,7 @@ class Response:
             "code": self.code,
             "message": self.message
         }
+
         if len(list({**self.optional_fields})) > 0:
             return {**mandatory_fields, **self.optional_fields}
         else:

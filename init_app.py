@@ -5,6 +5,7 @@ from flask_jsonrpc import JSONRPC
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
+from endpoints.account import account
 from endpoints.auth import auth
 
 
@@ -16,6 +17,7 @@ def create_app():
     migrate = Migrate(app, db)
     endpoints = [
         auth,
+        account,
     ]
 
     for ep in endpoints:
