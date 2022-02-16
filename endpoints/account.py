@@ -77,6 +77,13 @@ def create_account(
             s.commit()
             log.info("New account saved")
         except Exception as e:
-            return Response(code="error", message="failure saving account").to_json()
+            return Response(
+                code="error",
+                message="failure saving account",
+                help=str(e)
+            ).to_json()
 
         return Response(code="ok", message="new account created", login_code=login_code).to_json()
+
+# @account.method("get_accounts")
+# def get_accounts()

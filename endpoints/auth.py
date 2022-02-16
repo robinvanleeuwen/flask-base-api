@@ -37,11 +37,17 @@ def get_account_from_database(login_code: str) -> Union[Account, None]:
             return result[0]
 
 
-def clear_expired_tokens_for_account(account):
+def clear_expired_tokens_for_account(account: Account):
+    """
+    Get all the tokens in the database for the given account.
+    If the token is expired, delete it from the database.
+    :param account: The Account object for which to get the tokens for.
+    :return: Nothing
+    """
     with db_session_manager() as s:
         result = s.query(Token).filter(Token.account_id == account.id).all()
 
-        count = 0;
+        count = 0
         for token in result:
             if datetime.now() - timedelta(**{EXPIRATION_ATTRIBUTE: TOKEN_EXPIRATION_DELTA}) > token.valid_until:
                 # token has expired, delete it.
