@@ -25,6 +25,7 @@ log_level_definitions = {
     "SILENT": 1,
 }
 
+ENVIRONMENT = os.environ.get("APP_SETTINGS", "config.Development")
 ENVIRONMENT = "config.Development"
 
 if ENVIRONMENT == "config.Development":
