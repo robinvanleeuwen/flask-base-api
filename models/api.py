@@ -17,7 +17,7 @@ class Account(APIBase):
 
     id = Column(Integer, primary_key=True)
     uid = Column(Text, index=True, default=generate_uid)
-    login_code = Column(Text, index=True, nullable=False)
+    login_code = Column(Text, index=True, nullable=False, unique=True)
     login_secret = Column(Text, index=True, nullable=False)
     admin_level = Column(Integer, default=0)
 
@@ -27,7 +27,7 @@ class Token(APIBase):
 
     id = Column(Integer, primary_key=True)
     uid = Column(Text, index=True, default=generate_uid)
-    token = Column(Text, index=True)
+    key = Column(Text, index=True)
     valid_until = Column(DateTime)
     account_id = Column(Integer, ForeignKey("account.id"))
 
