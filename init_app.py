@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from flask_cors import CORS
 from flask_jsonrpc import JSONRPC
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -11,6 +12,7 @@ from endpoints.auth import auth
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)
     app.config.from_object(os.environ.get("APP_SETTINGS"))
     api = JSONRPC(app, "/api/v1", enable_web_browsable_api=True)
     db = SQLAlchemy(app)

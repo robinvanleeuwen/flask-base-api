@@ -1,7 +1,7 @@
 import random
 import string
 
-from sqlalchemy import Integer, Column, Text, DateTime, ForeignKey
+from sqlalchemy import Integer, Column, Text, DateTime, ForeignKey, LargeBinary
 from sqlalchemy.orm import relationship
 
 from database import APIBase
@@ -17,8 +17,9 @@ class Account(APIBase):
 
     id = Column(Integer, primary_key=True)
     uid = Column(Text, index=True, default=generate_uid)
+    code = Column(Text, index=True, nullable=False)
     login_code = Column(Text, index=True, nullable=False, unique=True)
-    login_secret = Column(Text, index=True, nullable=False)
+    login_secret = Column(LargeBinary, index=True, nullable=False)
     admin_level = Column(Integer, default=0)
 
 

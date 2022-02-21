@@ -1,8 +1,9 @@
 from datetime import datetime, timedelta
 from typing import Union
-from uuid import uuid4
 
+import bcrypt
 from flask_jsonrpc import JSONRPCBlueprint
+from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
 from database import db_session_manager
@@ -19,12 +20,15 @@ EXPIRATION_ATTRIBUTE = "days"  # Timedelta: weeks, days, hours, minutes or secon
 TOKEN_EXPIRATION_DELTA = 1  # Tokens are invalid after (x) EXPIRATION_ATTRIBUTE.
 
 
-def get_account_from_database(login_code: str) -> Union[Account, None]:
+def get_account_from_database(account_code: str, login_code: str) -> Union[Account, None]:
     with db_session_manager() as session:
         result = session.query(
             Account
         ).filter(
-            Account.login_code == login_code
+            and_(
+                Account.login_code == login_code,
+                Account.code == account_code
+            )
         ).all()
 
         num_records = len(result)
@@ -37,7 +41,7 @@ def get_account_from_database(login_code: str) -> Union[Account, None]:
             return result[0]
 
 
-def clear_expired_tokens_for_account(account: Account):
+def clear_expired_tokens_for_login_code(account: Account):
     """
     Get all the tokens in the database for the given account.
     If the token is expired, delete it from the database.
@@ -83,7 +87,7 @@ def extend_token_lifetime(s: Session, token: Token) -> Response:
         return Response(code="error", message="failed to extend lifetime")
 
 
-def check_token_for_account(account: Account) -> Response:
+def check_api_key_for_account_login_code(account: Account) -> Response:
     """
     Check if there is a token in the database for the
     given account. If there is a token, check it's expiration
@@ -98,7 +102,7 @@ def check_token_for_account(account: Account) -> Response:
 
     """
 
-    clear_expired_tokens_for_account(account)
+    clear_expired_tokens_for_login_code(account)
 
     with db_session_manager() as s:
         # We'll use the first token if there are more than one
@@ -127,24 +131,26 @@ def check_token_for_account(account: Account) -> Response:
 
 
 @auth.method("login")
-def login(lc: str, ls: str) -> dict:
+def login(ac: str, lc: str, ls: str) -> dict:
     """
     Do the authentication process
-    :param lc: login code
-    :param ls: login secret
+    :param ac: account code   (eg company code)
+    :param lc: login code     (eg username or emailaddress)
+    :param ls: login secret   (eg password)
     :return: JSON Response
     """
     log.debug("Starting Authentication Process")
 
-    account = get_account_from_database(lc)
+    account = get_account_from_database(ac, lc)
     if account is None:
         return Response("error", "No Account Found").to_json()
-    if account.login_secret == ls:
+
+    if bcrypt.checkpw(ls.encode(), account.login_secret):
         login_success = True
     else:
         return Response("error", "invalid credentials").to_json()
 
-    response = check_token_for_account(account)
+    response = check_api_key_for_account_login_code(account)
     if response.code == "ok":
         key = response.optional_fields.get("api_key")
     else:
